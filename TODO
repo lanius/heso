@@ -1,0 +1,36 @@
+﻿====
+TODO
+====
+
+Base
+====
+* Input validation
+* Logging
+* Error handling
+
+Function
+========
+
+Server
+------
+* Remove files
+* Remove repositories
+* URI construction for git client
+* User manegement and key registration for git
+* Listing all heso, or pagination of heso
+* Comment view as reStructuredText Style
+
+Client
+------
+* Use Web Storage to save documents to browser during edit
+
+Usability
+=========
+* Set hostname automatically
+
+Design
+======
+* Logo and favicon.ico
+* Theming for CodeMirror
+* Refinement for user interface
+

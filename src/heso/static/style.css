@@ -1,0 +1,69 @@
+﻿.header {
+	background-color: #222;
+	border-bottom-style: solid;
+	border-bottom-width: 1px;
+	border-bottom-color: #444;
+	padding: 20px;
+}
+
+.header > .logo {
+	font-size: 40px;
+}
+
+.logo > .logoa {
+	color: #eee;
+}
+
+.logo > .logoa {
+	text-decoration: none;
+}
+
+.footer {
+	text-align: center;
+	padding: 10px;
+}
+
+.container-wrapper {
+	padding-top: 20px;
+	padding-bottom: 20px;
+}
+
+.create {
+	float: right;
+}
+
+.update {
+	float: right;
+}
+
+.add {
+	font-size: 15px;
+}
+
+.reponame {
+	margin-bottom: 10px;
+}
+
+.comments {
+	margin-top: 70px;
+}
+
+.comment {
+	width: 98.5%;
+	height: 100px;
+	margin-bottom: 19px;
+}
+
+.comment-wrapper {
+	margin-bottom: 29px;
+}
+
+.addcomment {
+	float: right;
+}
+
+.error-message {
+	color: #c43c35;
+	font-size: 15px;
+	font-weight:bold;
+}
