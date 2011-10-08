@@ -8,15 +8,14 @@ Heso is web application to share snippets and pastes with others, and an open so
 
 Getting started
 ===============
-Heso requires git. Install it anyway ::
+Heso requires git. Install it anyway::
 
     sudo yum install git -y
 
-Download the source code archive and extract it::
+Download the source code::
 
-     wget https://github.com/lanius/heso/tarball/master -O heso.tar.gz
-     tar zxvf heso.tar.gz
-     cd lanius-heso-*
+     git clone git://github.com/lanius/heso.git
+     cd heso
 
 Edit buildout.cfg and change value of "host" or "port" to suit your environment::
 

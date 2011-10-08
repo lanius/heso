@@ -23,14 +23,23 @@ Server
 Client
 ------
 * Use Web Storage to save documents to browser during edit
+* Be enable to select language manually
 
 Usability
 =========
 * Set hostname automatically
+* Enlarge code paste area
 
 Design
 ======
-* Logo and favicon.ico
+* Logo
 * Theming for CodeMirror
 * Refinement for user interface
 
+Consideration
+=============
+* Use pygments
+
+Others
+======
+* Trial environment
