@@ -117,6 +117,15 @@ class ApplicationTestCase(unittest.TestCase):
         self.assertEqual(result['files'][0]['filename'],
                          expected['files'][0]['filename'])
 
+    def test_destroy_heso(self):
+        heso = {'description':"This is description.",
+                'files':[{'filename':"heso_test.py",
+                          'document':"import heso"}]}
+        application.create_heso(heso)
+        reponame = self._get_diff_repos()[0]
+        application.destroy_heso(reponame)
+        self.assert_(reponame not in self._get_current_repos())
+
     def test_comment(self):
         heso = {'description': "This is description.",
                 'files': [{'filename': "heso_test.py",

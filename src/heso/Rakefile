@@ -1,0 +1,4 @@
+desc "Remove extra heso regularly on Heroku"
+task :cron do
+  sh "curl http://your.heroku.host/clean"
+end

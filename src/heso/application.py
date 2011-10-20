@@ -18,7 +18,7 @@
 """Application of Heso."""
 
 import os
-from glob import glob
+from dircache import listdir
 from itertools import chain
 from random import randrange
 from shutil import copyfile, rmtree
@@ -53,6 +53,10 @@ def update_heso(reponame, heso):
     _cleanup(reponame)
 
 
+def destroy_heso(reponame):
+    rmtree(_get_repo_path(reponame))
+
+
 def get_heso(reponame):
     repo = _get_repo(reponame)
     files = [{'filename': blob.name,
@@ -67,9 +71,7 @@ def get_heso(reponame):
 
 
 def get_all_heso():
-    reponames = _get_reponames()
-    return sorted([get_heso(reponame) for reponame in reponames],
-                  reverse=True)
+    return [get_heso(reponame) for reponame in _get_reponames()]
 
 
 def add_comment(reponame, comment):
@@ -106,11 +108,11 @@ def _init_repo(reponame):
 
 
 def _get_reponames():
-    tmp = os.getcwd()
-    os.chdir(REPO_ROOT)
-    reponames = [filename[0:-4] for filename in glob('*.git')]
-    os.chdir(tmp)
-    return reponames
+    files = [r for r in listdir(REPO_ROOT) if r.endswith('.git')]
+    files = sorted(files,
+                   key=lambda f: os.stat(os.path.join(REPO_ROOT, f)).st_mtime,
+                   reverse=True)
+    return [filename[0:-4] for filename in files]
 
 
 def _get_repo(reponame):

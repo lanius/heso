@@ -27,5 +27,6 @@ pip-log.txt
 #Mr Developer
 .mr.developer.cfg
 
-# Heso Original
+# Original
+.project
 deploy.ini

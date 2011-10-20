@@ -33,7 +33,7 @@ setup(
     zip_safe=False,
     install_requires=[
         "setuptools",
-        "Flask==0.7.2",
+        "Flask==0.8.0",
         "GitPython==0.3.2.RC1",
     ],
     entry_points="""
