@@ -4,17 +4,17 @@
 	<meta charset="utf-8">
 	<title>Heso</title>
 	<meta name="viewport" content="width=device-width" />
-	<link rel="stylesheet" href="/static/lib/bootstrap/bootstrap-1.2.0.css">
-	<link rel="stylesheet" href="/static/lib/bootstrap/bootstrap.custom.css">
-	<link rel="stylesheet" href="/static/lib/codemirror/codemirror.css">
-	<link rel="stylesheet" href="/static/lib/codemirror/theme/night.css">
-	<link rel="stylesheet" href="/static/lib/codemirror/codemirror.custom.css">
-	<link rel="stylesheet" href="/static/style.css">
+	<link rel="stylesheet" href="{{ url_for('static', filename='lib/bootstrap/bootstrap-1.2.0.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='lib/bootstrap/bootstrap.custom.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='lib/codemirror/codemirror.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='lib/codemirror/theme/night.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='lib/codemirror/codemirror.custom.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
 	<header class="header">
-		<div class="logo"><a href="/" class="logoa">Heso</a></div>
+    <div class="logo"><a href="{{ url_for('index') }}" class="logoa">Heso</a></div>
 	</header>
 	
 	<div class="container-wrapper">
@@ -23,7 +23,7 @@
 			<div class="sidebar">
 				{% for heso in hesoes %}
 				<div>
-					<a href="/{{heso.reponame}}">heso: {{heso.reponame}}</a> 
+					<a href="{{ url_for('heso', reponame=heso.reponame) }}">heso: {{heso.reponame}}</a> 
 					{{heso.description}} <br />
 					created {{heso.created}}
 				</div>
@@ -39,7 +39,7 @@
 					{{error_message}}
 				</div>
 
-				<form action="/create" method="post">
+			<form action="{{ url_for('create') }}" method="post">
 					<div class="well">
 						<input type="text" name="description" placeholder="description" class="xxlarge" />
 					</div>
@@ -81,7 +81,7 @@
 		Heso  is licensed under the Apache Licence, Version 2.0.
 	</footer>
 
-<script src="/static/lib/codemirror/codemirror.js"></script>
-<script src="/static/script.js"></script>
+<script src="{{ url_for('static', filename='lib/codemirror/codemirror.js') }}"></script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

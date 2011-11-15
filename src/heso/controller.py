@@ -79,14 +79,14 @@ def heso(reponame):
                                    hesoes=hesoes, error_message=message)
 
         update_heso(reponame, heso)
-        return redirect("/{0}".format(reponame))
+        return redirect(url_for('heso', reponame=reponame))
 
 
 @app.route('/<reponame>/comment', methods=['POST'])
 def comment(reponame):
     comment = request.form.get('comment')
     add_comment(reponame, comment)
-    return redirect("/{0}".format(reponame))
+    return redirect(url_for('heso', reponame=reponame))
 
 
 @app.errorhandler(500)

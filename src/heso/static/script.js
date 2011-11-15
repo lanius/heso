@@ -48,7 +48,7 @@
   loadScript = function (language, onloadCallback) {
     var url, script;
     if (language !== 'text') {
-      url = '/static/lib/codemirror/mode/' + language + '.js';
+      url = 'static/lib/codemirror/mode/' + language + '.js';
       script = document.createElement('script');
       script.src = url;
       script.onload = onloadCallback;
