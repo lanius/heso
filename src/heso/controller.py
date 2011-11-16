@@ -67,7 +67,7 @@ def heso(reponame):
     if request.method == 'GET':
         heso = get_heso(reponame)
         comments = get_all_comment(reponame)
-        return render_template('heso.html', heso=heso, comments=comments)
+        return render_template('index.html', heso=heso, comments=comments)
 
     if request.method == 'POST':
         heso = extract_heso(request.form)
