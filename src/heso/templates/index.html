@@ -31,56 +31,45 @@
 			</div>
 
 			<div class="content">
-				<div class="error-message">
-					{{ error_message }}
+				{% with messages = get_flashed_messages() %}
+				{% if messages %}
+				<div class="error-message error">
+					{% for message in messages %}
+					<p><strong>{{ message }}</strong></p>
+					{% endfor %}
 				</div>
-				{% if heso %}
-				<form action="{{ url_for('heso', reponame=heso.reponame) }}" method="post">
-				{% else %}
-				<form action="{{ url_for('create') }}" method="post">
 				{% endif %}
+				{% endwith %}
+				<form action="{{ action }}" method="post">
 					<div class="well">
-						{% if heso %}
-						<h2 class="reponame">heso: {{heso.reponame}}</h2>
-						Description: <input type="text" name="description" value="{{heso.description}}" placeholder="description" class="xxlarge" />
-						{% else %}
-						<h2 class="reponame">heso: </h2>
-						Description: <input type="text" name="description" value="" placeholder="description" class="xxlarge" />
-						{% endif %}
+						<h2 class="reponame">heso: {{ reponame }}</h2>
+						Description: {{ form.description(placeholder="description", class="xxlarge") }}"
 					</div>
 					<div id="files">
-						{% if heso %}
-						{% for file in heso.files %}
+						{% for ff in form.files.entries %}
 						<div class="well">
-							<input type="text" name="filename[{{loop.index0}}]" value="{{file.filename}}" placeholder="file name" />
+							{{ ff.filename(placeholder="file name") }}
 							<hr />
-							<textarea name="document[{{loop.index0}}]" class="document">{{file.document}}</textarea>
+							{{ ff.document(rows="16", cols="200", class="document") }}
 						</div>
 						{% endfor %}
-						{% else %}
-						<div class="well">
-							<input type="text" name="filename[0]" value="" placeholder="file name" />
-							<hr />
-							<textarea name="document[0]" class="document">{{ '\n' * 8 }}</textarea>
-						</div>
-						{% endif %}
 					</div>
 
 					<div class="well">
 						<a id="add" href="#" class="add">add another file</a>
-						{% if reponame %}
-						<div class="update">
-							<input type="submit" value="Update Heso" class="btn primary" />
-						</div>
-						{% else %}
+						{% if for_create %}
 						<div class="create">
 							<input type="submit" value="Create Heso" class="btn primary" />
+						</div>
+						{% else %}
+						<div class="update">
+							<input type="submit" value="Update Heso" class="btn primary" />
 						</div>
 						{% endif %}
 					</div>
 
 				</form>
-				{% if comments %}
+				{% if for_create is not defined %}
 				<div class="comments">
 					<h3>Comments</h3>
 					<hr />
@@ -89,17 +78,15 @@
 						<hr />
 					{% endfor %}
 				</div>
-				{% endif %}
 				<div class="well">
-					{% if heso %}
-					<form action="{{ url_for('comment', reponame=heso.reponame) }}" method="post" class="comment-wrapper">
+					<form action="{{ url_for('comment', reponame=reponame) }}" method="post" class="comment-wrapper">
 						<textarea name="comment" class="comment" placeholder="comment"></textarea>
 						<div>
 							<input type="submit" value="add comment" class="addcomment btn"/>
 						</div>
 					</form>
-					{% endif %}
 				</div>
+				{% endif %}
 
 			</div> <!-- content -->
 		</div> <!-- container-fluid -->
