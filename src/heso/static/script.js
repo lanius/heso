@@ -1,10 +1,7 @@
 ﻿(function () {
   "use strict";
-  var getFileLanguage, getIndex, loadScript, setupCodeMirror,
-      setUpTextArea, createFileNode,
-      textAreas, i, max;
 
-  getFileLanguage = function (fileName) {
+  var getFileLanguage = function (fileName) {
     var ext = fileName.split('.').pop(),
         language = "text";
     switch (ext) {
@@ -41,11 +38,11 @@
     return language;
   };
 
-  getIndex = function (name) {
+  var getIndex = function (name) {
     return name.match(/(document|filename)\[(\d+)\]/)[2];
   };
 
-  loadScript = function (language, onloadCallback) {
+  var loadScript = function (language, onloadCallback) {
     var url, script;
     if (language !== 'text') {
       url = 'static/lib/codemirror/mode/' + language + '.js';
@@ -58,7 +55,7 @@
     }
   };
 
-  setupCodeMirror = function (textArea, language) {
+  var setupCodeMirror = function (textArea, language) {
     var setup = function (textArea, language) {
       var editor, hlLine;
       editor = CodeMirror.fromTextArea(textArea, {
@@ -90,7 +87,7 @@
   };
 
 
-  setUpTextArea = function (textArea) {
+  var setUpTextArea = function (textArea) {
     var fileNameInput = document.getElementsByName("filename[" + getIndex(textArea.name) + "]")[0];
 
     fileNameInput.onchange = function (event) {
@@ -108,14 +105,15 @@
     fileNameInput.onchange({'target': fileNameInput});
   };
 
-  createFileNode = function () {
-    var numFiles, fileNode, fileName, textArea;
-
+  var createFileNode = function () {
+    var numFiles;
     numFiles = document.getElementsByClassName("document").length;
 
+    var fileNode;
     fileNode = document.createElement("div");
-    fileNode.className = "well";
+    fileNode.className = "well clearfix";
 
+    var fileName;
     fileName = document.createElement("input");
     fileName.setAttribute("type", "text");
     fileName.setAttribute("name", "filename[" + numFiles + "]");
@@ -124,6 +122,7 @@
 
     fileNode.appendChild(document.createElement("hr"));
 
+    var textArea;
     textArea = document.createElement("textarea");
     textArea.setAttribute("name", "document[" + numFiles + "]");
     textArea.setAttribute("placeholder", "document");
@@ -131,12 +130,41 @@
     textArea.innerHTML = "\n\n\n\n\n\n\n\n\n\n";
     fileNode.appendChild(textArea);
 
+    var removed;
+    removed = document.createElement("input");
+    removed.type = "hidden";
+    removed.value = "false";
+    removed.className = "removed";
+    removed.setAttribute("name", "removed[" + numFiles + "]");
+    fileNode.appendChild(removed);
+
+    var removeLink, a;
+    removeLink = document.createElement("div");
+    a = document.createElement("a");
+    a.innerHTML = "remove";
+    a.href = "#";
+    a.onclick = function () {
+      removeFileNode(fileNode);
+      return false;
+    };
+    removeLink.appendChild(a);
+    removeLink.className = "remove";
+    fileNode.appendChild(removeLink);
+
     // fixme: is there any smart way?
     fileNode.textarea = textArea;
 
     return fileNode;
   };
 
+  var removeFileNode = function (fileNode) {
+    var removed = fileNode.getElementsByClassName("removed")[0];
+    removed.value = true;
+    fileNode.style.display = "none";
+  };
+
+
+  var textAreas, fileNodes, i, max;
 
   textAreas = document.getElementsByClassName("document");
   for (i = 0, max = textAreas.length; i < max; i += 1) {
@@ -149,5 +177,16 @@
     setUpTextArea(fileNode.textarea);
     return false;
   };
+
+  fileNodes = document.getElementById("files").children;
+  for (i = 0, max = fileNodes.length; i < max; i += 1) {
+    (function () {
+        var fileNode = fileNodes[i];
+	    fileNode.getElementsByTagName("a")[0].onclick = function () {
+	      removeFileNode(fileNode);
+	      return false;
+	    };
+	}());
+  }
 
 }());

@@ -13,7 +13,6 @@ Function
 
 Server
 ------
-* Remove files
 * Remove repositories
 * URI construction for git client
 * User manegement and key registration for git

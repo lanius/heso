@@ -31,8 +31,8 @@ from setting import REPO_ROOT
 def is_invalid(heso):
     files = heso['files']
     description = heso['description']
-    if all(chain(*[[f['filename'], f['document']] for f in files]))\
-           and description:
+    if all(chain(*[[f['filename'], f['document']] for f in files
+                   if not f['removed']])) and description:
         return False
     else:
         return True
@@ -60,7 +60,8 @@ def destroy_heso(reponame):
 def get_heso(reponame):
     repo = _get_repo(reponame)
     files = [{'filename': blob.name,
-              'document': unicode(blob.data_stream.read(), 'utf-8')}
+              'document': unicode(blob.data_stream.read(), 'utf-8'),
+              'removed': False}
              for blob in repo.tree()]
     return {'reponame': reponame,
             'files': files,
@@ -128,8 +129,15 @@ def _update_repo(reponame, files, description):
     tmp_path = os.path.join(gettempdir(), reponame)
     repo.clone(tmp_path)
     for f in files:
-        with open(os.path.join(tmp_path, f['filename']), 'w') as fp:
-            fp.write(f['document'].encode('utf-8'))
+        file_path =os.path.join(tmp_path, f['filename'])
+        if f['removed']:
+            if os.path.exists(file_path):
+                os.remove(file_path)
+            else:
+                pass
+        else:
+            with open(file_path, 'w') as fp:
+                fp.write(f['document'].encode('utf-8'))
     repo.description = description.encode('utf-8')
 
 

@@ -40,6 +40,11 @@
 	font-size: 15px;
 }
 
+.remove {
+	float: right;
+	padding-top: 19px;
+}
+
 .reponame {
 	margin-bottom: 10px;
 }
@@ -66,4 +71,10 @@
 	color: #c43c35;
 	font-size: 15px;
 	font-weight:bold;
+}
+
+.clearfix:after {
+	content: "";
+	display: block;
+	clear: both;
 }

@@ -33,10 +33,12 @@
 					
 					<div id="files">
 						{% for file in heso.files %}
-						<div class="well">
+						<div class="well clearfix">
 							<input type="text" name="filename[{{loop.index0}}]" value="{{file.filename}}" />
 							<hr />
 							<textarea name="document[{{loop.index0}}]" class="document">{{file.document}}</textarea>
+							<input type="hidden" name="removed[{{loop.index0}}]" class="removed" value="false" />
+							<div class="remove"><a href="#">remove</a></div>
 						</div>
 						{% endfor %}
 					</div>

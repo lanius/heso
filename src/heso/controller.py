@@ -103,11 +103,15 @@ def extract_heso(form):
     while True:
         filename = form.get('filename[{0}]'.format(idx))
         document = form.get('document[{0}]'.format(idx))
+        removed_str = form.get('removed[{0}]'.format(idx))
 
-        if (not filename) and (not document):
+        if (not filename) and (not document) and (not removed_str):
             break
 
-        files.append({'filename': filename, 'document': document})
+        removed = True if removed_str == u'true' else False
+
+        files.append({'filename': filename, 'document': document,
+                      'removed': removed})
         idx += 1
 
     return {'files': files, 'description': form.get('description')}
