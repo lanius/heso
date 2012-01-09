@@ -35,6 +35,7 @@ setup(
         "setuptools",
         "Flask==0.8.0",
         "GitPython==0.3.2.RC1",
+        "WTForms==0.6.3",
     ],
     entry_points="""
     [paste.app_factory]

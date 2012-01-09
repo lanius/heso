@@ -43,7 +43,7 @@
 				<form action="{{ action }}" method="post">
 					<div class="well">
 						<h2 class="reponame">heso: {{ reponame }}</h2>
-						Description: {{ form.description(placeholder="description", class="xxlarge") }}"
+						Description: {{ form.description(placeholder="description", class="xxlarge") }}
 					</div>
 					<div id="files">
 						{% for ff in form.files.entries %}
@@ -51,6 +51,8 @@
 							{{ ff.filename(placeholder="file name") }}
 							<hr />
 							{{ ff.document(rows="16", cols="200", class="document") }}
+							{{ ff.removed(value="false", class="removed") }}
+							<div class="remove"><a href="#">remove</a></div>
 						</div>
 						{% endfor %}
 					</div>

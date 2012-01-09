@@ -116,8 +116,8 @@
     var fileName;
     fileName = document.createElement("input");
     fileName.setAttribute("type", "text");
-    fileName.setAttribute("id", "files" + numFiles + "-filename");
-    fileName.setAttribute("name", "files" + numFiles + "-filename");
+    fileName.setAttribute("id", "files-" + numFiles + "-filename");
+    fileName.setAttribute("name", "files-" + numFiles + "-filename");
     fileName.setAttribute("placeholder", "file name");
     fileNode.appendChild(fileName);
 
@@ -137,8 +137,9 @@
     removed = document.createElement("input");
     removed.type = "hidden";
     removed.value = "false";
+    removed.setAttribute("id", "files-" + numFiles + "-removed");
+    removed.setAttribute("name", "files-" + numFiles + "-removed");
     removed.className = "removed";
-    removed.setAttribute("name", "removed[" + numFiles + "]");
     fileNode.appendChild(removed);
 
     var removeLink, a;
