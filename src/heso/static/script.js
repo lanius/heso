@@ -39,7 +39,7 @@
   };
 
   var getIndex = function (name) {
-    return name.match(/(document|filename)\[(\d+)\]/)[2];
+    return name.match(/files-(\d+)-(document|filename)/)[1];
   };
 
   var loadScript = function (language, onloadCallback) {
@@ -88,12 +88,12 @@
 
 
   var setUpTextArea = function (textArea) {
-    var fileNameInput = document.getElementsByName("filename[" + getIndex(textArea.name) + "]")[0];
+    var fileNameInput = document.getElementsByName("files-" + getIndex(textArea.name) + "-filename")[0];
 
     fileNameInput.onchange = function (event) {
       var fileNameInput, textArea, fileName;
       fileNameInput = event.target;
-      textArea = document.getElementsByName("document[" + getIndex(fileNameInput.name) + "]")[0];
+      textArea = document.getElementsByName("files-" + getIndex(fileNameInput.name) + "-document")[0];
       fileName = fileNameInput.value;
       if (!textArea.changeMode) {
         setupCodeMirror(textArea, getFileLanguage(fileName));
@@ -116,7 +116,8 @@
     var fileName;
     fileName = document.createElement("input");
     fileName.setAttribute("type", "text");
-    fileName.setAttribute("name", "filename[" + numFiles + "]");
+    fileName.setAttribute("id", "files" + numFiles + "-filename");
+    fileName.setAttribute("name", "files" + numFiles + "-filename");
     fileName.setAttribute("placeholder", "file name");
     fileNode.appendChild(fileName);
 
@@ -124,10 +125,12 @@
 
     var textArea;
     textArea = document.createElement("textarea");
-    textArea.setAttribute("name", "document[" + numFiles + "]");
+    textArea.setAttribute("id", "files-" + numFiles + "-document");
+    textArea.setAttribute("name", "files-" + numFiles + "-document");
     textArea.setAttribute("placeholder", "document");
+    textArea.setAttribute("rows", "16");
+    textArea.setAttribute("cols", "200");
     textArea.className = "document";
-    textArea.innerHTML = "\n\n\n\n\n\n\n\n\n\n";
     fileNode.appendChild(textArea);
 
     var removed;

@@ -29,4 +29,6 @@ pip-log.txt
 
 # Original
 .project
+.pydevproject
+.settings
 deploy.ini

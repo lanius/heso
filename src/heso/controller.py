@@ -17,9 +17,11 @@
 
 """Controller of Heso."""
 
-from flask import Flask, request, render_template, abort, redirect, url_for
+import os
+from flask import Flask, request, render_template, abort, redirect, url_for, flash
 from setting import REPO_ROOT
 from application import *
+from forms import HesoForm
 #from mock import *
 
 
@@ -42,44 +44,33 @@ def favicon():
     return app.send_static_file('favicon.ico')
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
+    form = HesoForm(request.form)
+    if request.method == 'POST':
+        if form.validate():
+            create_heso(extract_heso(form))
+            return redirect(url_for('index'))
+        flash(u'all fields are required.')
     hesoes = get_all_heso()
-    return render_template('index.html', hesoes=hesoes)
-
-
-@app.route('/create', methods=['POST'])
-def create():
-    heso = extract_heso(request.form)
-
-    if is_invalid(heso):
-        message = u'all fields are required.'
-        hesoes = get_all_heso()
-        return render_template('index.html',
-                               hesoes=hesoes, error_message=message)
-
-    create_heso(heso)
-    return redirect(url_for('index'))
+    return render_template('index.html', hesoes=hesoes, form=form, 
+                           for_create=True)
 
 
 @app.route('/<reponame>', methods=['GET', 'POST'])
 def heso(reponame):
-    if request.method == 'GET':
-        heso = get_heso(reponame)
-        comments = get_all_comment(reponame)
-        return render_template('heso.html', heso=heso, comments=comments)
-
     if request.method == 'POST':
-        heso = extract_heso(request.form)
-
-        if is_invalid(heso):
-            message = u'all fields are required.'
-            hesoes = get_all_heso()
-            return render_template('index.html',
-                                   hesoes=hesoes, error_message=message)
-
-        update_heso(reponame, heso)
-        return redirect(url_for('heso', reponame=reponame))
+        form = HesoForm(request.form)
+        if form.validate():
+            update_heso(reponame, extract_heso(form))
+            return redirect(url_for('heso', reponame=reponame))
+        flash(u'all fields are required.')
+    else:
+        form = HesoForm(**get_heso(reponame))
+    comments = get_all_comment(reponame)
+    hesoes = get_all_heso()
+    return render_template('index.html', reponame=reponame, hesoes=hesoes, form=form,
+            comments=comments)
 
 
 @app.route('/<reponame>/comment', methods=['POST'])
@@ -98,27 +89,17 @@ def error(e):
 
 
 def extract_heso(form):
-    files = []
-    idx = 0
-    while True:
-        filename = form.get('filename[{0}]'.format(idx))
-        document = form.get('document[{0}]'.format(idx))
-        removed_str = form.get('removed[{0}]'.format(idx))
-
-        if (not filename) and (not document) and (not removed_str):
-            break
-
-        removed = True if removed_str == u'true' else False
-
-        files.append({'filename': filename, 'document': document,
-                      'removed': removed})
-        idx += 1
-
-    return {'files': files, 'description': form.get('description')}
+    return {'files': [{'filename': f.filename.data, 
+                       'document': f.document.data,
+                       'removed': True if f.removed.data == u'true' else False
+                       }
+                      for f in form.files.entries],
+            'description': form.description.data}
 
 
 def make_app(global_conf={}):
     app.debug = False
+    app.secret_key = os.urandom(24)
     return app
 
 

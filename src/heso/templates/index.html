@@ -14,12 +14,11 @@
 <body>
 
 	<header class="header">
-    <div class="logo"><a href="{{ url_for('index') }}" class="logoa">Heso</a></div>
+	<div class="logo"><a href="{{ url_for('index') }}" class="logoa">Heso</a></div>
 	</header>
-	
+
 	<div class="container-wrapper">
 		<div class="container-fluid">
-		
 			<div class="sidebar">
 				{% for heso in hesoes %}
 				<div>
@@ -30,57 +29,72 @@
 				<hr />
 				{% endfor %}
 			</div>
-			
-			
-			
+
 			<div class="content">
-			
-				<div class="error-message">
-					{{error_message}}
+				{% with messages = get_flashed_messages() %}
+				{% if messages %}
+				<div class="error-message error">
+					{% for message in messages %}
+					<p><strong>{{ message }}</strong></p>
+					{% endfor %}
 				</div>
-
-			<form action="{{ url_for('create') }}" method="post">
+				{% endif %}
+				{% endwith %}
+				<form action="{{ action }}" method="post">
 					<div class="well">
-						<input type="text" name="description" placeholder="description" class="xxlarge" />
+						<h2 class="reponame">heso: {{ reponame }}</h2>
+						Description: {{ form.description(placeholder="description", class="xxlarge") }}"
 					</div>
-					
 					<div id="files">
+						{% for ff in form.files.entries %}
 						<div class="well clearfix">
-							<input type="text" name="filename[0]" placeholder="file name" />						
+							{{ ff.filename(placeholder="file name") }}
 							<hr />
-							<textarea name="document[0]" class="document" placeholder="document">
-
-
-
-
-
-
-
-
-
-</textarea>
-						</div> <!-- well -->
+							{{ ff.document(rows="16", cols="200", class="document") }}
+						</div>
+						{% endfor %}
 					</div>
-					
+
 					<div class="well">
 						<a id="add" href="#" class="add">add another file</a>
+						{% if for_create %}
+						<div class="create">
+							<input type="submit" value="Create Heso" class="btn primary" />
+						</div>
+						{% else %}
+						<div class="update">
+							<input type="submit" value="Update Heso" class="btn primary" />
+						</div>
+						{% endif %}
 					</div>
-					
-					<div class="create">
-						<input type="submit" value="Create Heso" class="btn primary" />
-					</div>
-					
+
 				</form>
-			
-			
+				{% if for_create is not defined %}
+				<div class="comments">
+					<h3>Comments</h3>
+					<hr />
+					{% for comment in comments %}
+						{{comment}}
+						<hr />
+					{% endfor %}
+				</div>
+				<div class="well">
+					<form action="{{ url_for('comment', reponame=reponame) }}" method="post" class="comment-wrapper">
+						<textarea name="comment" class="comment" placeholder="comment"></textarea>
+						<div>
+							<input type="submit" value="add comment" class="addcomment btn"/>
+						</div>
+					</form>
+				</div>
+				{% endif %}
+
 			</div> <!-- content -->
 		</div> <!-- container-fluid -->
 	</div> <!-- container-wrapper -->
-	
+
 	<footer class="footer">
 		Heso  is licensed under the Apache Licence, Version 2.0.
 	</footer>
-
 <script src="{{ url_for('static', filename='lib/codemirror/codemirror.js') }}"></script>
 <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
