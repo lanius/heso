@@ -78,7 +78,8 @@ def heso(reponame):
 @app.route('/<reponame>/comment', methods=['POST'])
 def comment(reponame):
     comment = request.form.get('comment')
-    add_comment(reponame, comment)
+    if comment:
+        add_comment(reponame, comment)
     return redirect(url_for('heso', reponame=reponame))
 
 
