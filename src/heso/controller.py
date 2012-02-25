@@ -18,11 +18,13 @@
 """Controller of Heso."""
 
 import os
-from flask import Flask, request, render_template, abort, redirect, url_for, flash
+
+from flask import (Flask, request, render_template, abort, redirect, url_for,
+                   flash)
+
 from setting import REPO_ROOT
 from application import *
 from forms import HesoForm
-#from mock import *
 
 
 app = Flask(__name__)
