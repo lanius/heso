@@ -1,4 +1,8 @@
-﻿Welcome to Heso
+﻿====
+Heso
+====
+
+Welcome to Heso
 ===============
 Heso is web application to share snippets and pastes with others, and an open source clone of Gist.
 
@@ -33,7 +37,7 @@ Now, you can run the server::
 Installing on Windows
 =====================
 
-Set a GIT_PYTHON_GIT_EXECUTABLE environment variable to the full path to the git executable, e.g. C:\Program Files (x86)\Git\bin\git.exe.
+Set a GIT_PYTHON_GIT_EXECUTABLE environment variable to the full path to the git executable, e.g. C:\\Program Files (x86)\\Git\\bin\\git.exe.
 
 Installing on Heroku
 ====================

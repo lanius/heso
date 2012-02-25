@@ -35,10 +35,11 @@ Design
 * Theming for CodeMirror
 * Refinement for user interface
 
+Dependencies
+============
+* Upgrade bootstrap
+* Upgrade CodeMirror
+
 Consideration
 =============
 * Use pygments
-
-Others
-======
-* Trial environment
