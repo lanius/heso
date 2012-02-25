@@ -14,7 +14,7 @@
 <body>
 
 	<header class="header">
-	<div class="logo"><a href="{{ url_for('index') }}" class="logoa">Heso</a></div>
+		<div class="logo"><a href="{{ url_for('index') }}" class="logoa">Heso</a></div>
 	</header>
 
 	<div class="container-wrapper">
@@ -59,16 +59,17 @@
 
 					<div class="well">
 						<a id="add" href="#" class="add">add another file</a>
-						{% if for_create %}
-						<div class="create">
-							<input type="submit" value="Create Heso" class="btn primary" />
-						</div>
-						{% else %}
-						<div class="update">
-							<input type="submit" value="Update Heso" class="btn primary" />
-						</div>
-						{% endif %}
 					</div>
+					
+					{% if for_create %}
+					<div class="create">
+						<input type="submit" value="Create Heso" class="btn primary" />
+					</div>
+					{% else %}
+					<div class="update">
+						<input type="submit" value="Update Heso" class="btn primary" />
+					</div>
+					{% endif %}
 
 				</form>
 				{% if for_create is not defined %}

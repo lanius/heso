@@ -88,6 +88,11 @@
 
 
   var setUpTextArea = function (textArea) {
+  
+    if (textArea.innerHTML === "") {
+      textArea.innerHTML = "\n\n\n\n";
+    }
+
     var fileNameInput = document.getElementsByName("files-" + getIndex(textArea.name) + "-filename")[0];
 
     fileNameInput.onchange = function (event) {

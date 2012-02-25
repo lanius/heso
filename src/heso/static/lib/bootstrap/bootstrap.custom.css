@@ -1,8 +1,18 @@
-﻿.container-fluid > .sidebar {
+﻿.container-fluid {
+	min-width: 950px;
+}
+
+.container-fluid > .sidebar {
 	float: right;
 
 }
+
 .container-fluid > .content {
 	margin-left: 0;
 	margin-right: 240px;
+	
+}
+
+form .clearfix {
+	margin-bottom: 20px;
 }
