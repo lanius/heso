@@ -1,18 +1,16 @@
-﻿.container-fluid {
-	min-width: 950px;
+﻿.navbar-inner {
+	border-radius: 0px;
 }
 
-.container-fluid > .sidebar {
-	float: right;
-
+.container-fluid {
+	padding-top: 20px;
+	padding-bottom: 20px;
 }
 
-.container-fluid > .content {
-	margin-left: 0;
-	margin-right: 240px;
-	
+code, pre {
+	color: #F8F8F8;
 }
 
-form .clearfix {
-	margin-bottom: 20px;
+hr {
+	margin: 0 0 19px;
 }

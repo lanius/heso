@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<title>Heso</title>
 	<meta name="viewport" content="width=device-width" />
-	<link rel="stylesheet" href="{{ url_for('static', filename='lib/bootstrap/bootstrap-1.2.0.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='lib/bootstrap/bootstrap.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='lib/bootstrap/bootstrap.custom.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='lib/codemirror/codemirror.css') }}">
 	<link rel="stylesheet" href="{{ url_for('static', filename='lib/codemirror/theme/night.css') }}">
@@ -13,24 +13,14 @@
 </head>
 <body>
 
-	<header class="header">
+	<header class="header navbar-inner">
 		<div class="logo"><a href="{{ url_for('index') }}" class="logoa">Heso</a></div>
 	</header>
 
-	<div class="container-wrapper">
-		<div class="container-fluid">
-			<div class="sidebar">
-				{% for heso in hesoes %}
-				<div>
-					<a href="{{ url_for('heso', reponame=heso.reponame) }}">heso: {{heso.reponame}}</a> 
-					{{heso.description}} <br />
-					created {{heso.created}}
-				</div>
-				<hr />
-				{% endfor %}
-			</div>
+	<div class="container-fluid">
+		<div class="row-fluid">
 
-			<div class="content">
+			<div class="span10"> <!-- content -->
 				{% with messages = get_flashed_messages() %}
 				{% if messages %}
 				<div class="error-message error">
@@ -42,14 +32,16 @@
 				{% endwith %}
 				<form action="{{ action }}" method="post">
 					<div class="well">
+						{% if reponame %}
 						<h2 class="reponame">heso: {{ reponame }}</h2>
-						Description: {{ form.description(placeholder="description", class="xxlarge") }}
+						{% endif %}
+						{{ form.description(placeholder="description", class="description input-xxlarge") }}
 					</div>
 					<div id="files">
 						{% for ff in form.files.entries %}
 						<div class="well clearfix">
-							{{ ff.filename(placeholder="file name") }}
-							<hr />
+							{{ ff.filename(placeholder="file name", class="filename") }}
+							
 							{{ ff.document(rows="16", cols="200", class="document") }}
 							{{ ff.removed(value="false", class="removed") }}
 							<div class="remove"><a href="#">remove</a></div>
@@ -63,11 +55,11 @@
 					
 					{% if for_create %}
 					<div class="create">
-						<input type="submit" value="Create Heso" class="btn primary" />
+						<input type="submit" value="Create Heso" class="btn btn-primary" />
 					</div>
 					{% else %}
 					<div class="update">
-						<input type="submit" value="Update Heso" class="btn primary" />
+						<input type="submit" value="Update Heso" class="btn btn-primary" />
 					</div>
 					{% endif %}
 
@@ -81,7 +73,7 @@
 						<hr />
 					{% endfor %}
 				</div>
-				<div class="well">
+				<div class="well comment-well">
 					<form action="{{ url_for('comment', reponame=reponame) }}" method="post" class="comment-wrapper">
 						<textarea name="comment" class="comment" placeholder="comment"></textarea>
 						<div>
@@ -92,12 +84,24 @@
 				{% endif %}
 
 			</div> <!-- content -->
-		</div> <!-- container-fluid -->
-	</div> <!-- container-wrapper -->
+			
+			<div class="span2"> <!-- sidebar -->
+				{% for heso in hesoes %}
+				<div>
+					<a href="{{ url_for('heso', reponame=heso.reponame) }}">heso: {{heso.reponame}}</a> 
+					{{heso.description}} <br />
+					created {{heso.created}}
+				</div>
+				<hr />
+				{% endfor %}
+			</div>  <!-- sidebar -->
+			
+			
+		</div> <!-- row-fluid -->
+	</div> <!-- container-fluid -->
 
-	<footer class="footer">
-		Heso  is licensed under the Apache Licence, Version 2.0.
-	</footer>
+	<footer class="footer"></footer>
+
 <script src="{{ url_for('static', filename='lib/codemirror/codemirror.js') }}"></script>
 <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>

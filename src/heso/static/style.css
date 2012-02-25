@@ -1,8 +1,4 @@
 ﻿.header {
-	background-color: #222;
-	border-bottom-style: solid;
-	border-bottom-width: 1px;
-	border-bottom-color: #444;
 	padding: 20px;
 }
 
@@ -16,11 +12,6 @@
 
 .logo > .logoa {
 	text-decoration: none;
-}
-
-.footer {
-	text-align: center;
-	padding: 10px;
 }
 
 .container-wrapper {
@@ -49,6 +40,14 @@
 	margin-bottom: 10px;
 }
 
+.description {
+	margin-bottom: 0;
+}
+
+.filename {
+	margin-bottom: 19px;
+}
+
 .comments {
 	margin-top: 70px;
 }
@@ -61,6 +60,10 @@
 
 .comment-wrapper {
 	margin-bottom: 29px;
+}
+
+.comment-well {
+	margin-bottom: 0;
 }
 
 .addcomment {
