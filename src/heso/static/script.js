@@ -14,9 +14,6 @@
     case 'rb':
       language = 'ruby';
       break;
-    case 'php':
-      language = 'php';
-      break;
     case 'css':
       language = 'css';
       break;
