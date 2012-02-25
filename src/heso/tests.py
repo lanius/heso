@@ -17,6 +17,7 @@
 
 """Test script of Heso."""
 
+import errno, stat
 import os
 from shutil import rmtree
 import time
@@ -170,8 +171,7 @@ class ApplicationTestCase(unittest.TestCase):
         return list(reposet.difference(set(self.begin_repos)))
 
     def _remove_repo(self, reponame):
-        path = os.path.join(REPO_ROOT, ''.join([reponame, '.git']))
-        rmtree(path)
+        application.destroy_heso(reponame)
 
 
 def suite():

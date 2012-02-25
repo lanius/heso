@@ -17,14 +17,18 @@
 
 """Application of Heso."""
 
+import errno
 import os
+import stat
 from dircache import listdir
 from itertools import chain
 from random import randrange
 from shutil import copyfile, rmtree
-from time import time, gmtime, strftime
 from tempfile import gettempdir
+from time import time, gmtime, strftime
+
 from git import Repo
+
 from setting import REPO_ROOT
 
 
@@ -54,7 +58,7 @@ def update_heso(reponame, heso):
 
 
 def destroy_heso(reponame):
-    rmtree(_get_repo_path(reponame))
+    _rmtree(_get_repo_path(reponame))
 
 
 def get_heso(reponame):
@@ -129,7 +133,7 @@ def _update_repo(reponame, files, description):
     tmp_path = os.path.join(gettempdir(), reponame)
     repo.clone(tmp_path)
     for f in files:
-        file_path =os.path.join(tmp_path, f['filename'])
+        file_path = os.path.join(tmp_path, f['filename'])
         if f['removed']:
             if os.path.exists(file_path):
                 os.remove(file_path)
@@ -137,7 +141,8 @@ def _update_repo(reponame, files, description):
                 pass
         else:
             with open(file_path, 'w') as fp:
-                fp.write(f['document'].encode('utf-8'))
+                doc = _replace_lfcode(f['document'].encode('utf-8'))
+                fp.write(doc)
     repo.description = description.encode('utf-8')
 
 
@@ -153,7 +158,7 @@ def _push_repo(reponame, comment):
 
 
 def _cleanup(reponame):
-    rmtree(_get_tmp_path(reponame))
+    _rmtree(_get_tmp_path(reponame))
 
 
 def _get_tmp_path(reponame):
@@ -162,6 +167,27 @@ def _get_tmp_path(reponame):
 
 def _get_comment_path(reponame):
     return os.path.join(_get_repo_path(reponame), 'comments')
+
+
+def _rmtree(path):
+    rmtree(path, ignore_errors=False, onerror=_handle_readonly)
+
+
+def _handle_readonly(func, path, exc):
+    """For Windows.
+    See http://stackoverflow.com/questions/1213706/what-user-do-python-scripts-run-as-in-windows.
+    """
+    excvalue = exc[1]
+    if func in (os.rmdir, os.remove) and excvalue.errno == errno.EACCES:
+        os.chmod(path, stat.S_IRWXU | stat.S_IRWXG | stat.S_IRWXO)  # 0777
+        func(path)
+    else:
+        raise
+
+
+def _replace_lfcode(text):
+    """For Windows."""
+    return '\n'.join(text.splitlines())
 
 
 if __name__ == '__main__':

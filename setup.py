@@ -21,21 +21,21 @@ description = ("Heso is web application ",
                "to share snippets and pastes with others.")
 
 setup(
-    name="Heso",
-    version="0.1.0",
+    name='Heso',
+    version='0.1.0',
     description=description,
-    author="lanius",
+    author='lanius',
     author_email='lanius@nirvake.org',
-    license="Apache License 2.0",
+    license='Apache License 2.0',
     package_dir={'': 'src'},
     packages=find_packages('src'),
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        "setuptools",
-        "Flask==0.8.0",
-        "GitPython==0.3.2.RC1",
-        "WTForms==0.6.3",
+        'setuptools',
+        'Flask',
+        'GitPython',
+        'WTForms',
     ],
     entry_points="""
     [paste.app_factory]
