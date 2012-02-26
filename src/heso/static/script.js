@@ -1,6 +1,8 @@
 ﻿(function () {
   "use strict";
-
+  
+  var STATIC_ROOT = "/static/";
+  
   var getFileLanguage = function (fileName) {
     var ext = fileName.split('.').pop(),
         language = "text";
@@ -42,7 +44,7 @@
   var loadScript = function (language, onloadCallback) {
     var url, script;
     if (language !== 'text') {
-      url = 'static/lib/codemirror/mode/' + language + '.js';
+      url = STATIC_ROOT + 'lib/codemirror/mode/' + language + '.js';
       script = document.createElement('script');
       script.src = url;
       script.onload = onloadCallback;

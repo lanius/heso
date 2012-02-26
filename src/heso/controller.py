@@ -60,19 +60,24 @@ def index():
 
 
 @app.route('/<reponame>', methods=['GET', 'POST'])
-def heso(reponame):
+def heso_latest(reponame):
+    return heso(reponame, None)
+
+
+@app.route('/<reponame>/<rev>', methods=['GET', 'POST'])
+def heso(reponame, rev):
     if request.method == 'POST':
         form = HesoForm(request.form)
         if form.validate():
             update_heso(reponame, extract_heso(form))
-            return redirect(url_for('heso', reponame=reponame))
+            return redirect(url_for('heso_latest', reponame=reponame))
         flash(u'all fields are required.')
     else:
-        form = HesoForm(**get_heso(reponame))
+        form = HesoForm(**get_heso(reponame, rev))
+    history = get_history(reponame)
     comments = get_all_comment(reponame)
-    hesoes = get_all_heso()
-    return render_template('index.html', reponame=reponame, hesoes=hesoes, form=form,
-            comments=comments)
+    return render_template('index.html', reponame=reponame, form=form,
+                           history=history, comments=comments)
 
 
 @app.route('/<reponame>/comment', methods=['POST'])
@@ -80,7 +85,7 @@ def comment(reponame):
     comment = request.form.get('comment')
     if comment:
         add_comment(reponame, comment)
-    return redirect(url_for('heso', reponame=reponame))
+    return redirect(url_for('heso_latest', reponame=reponame))
 
 
 @app.errorhandler(500)

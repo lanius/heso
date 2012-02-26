@@ -20,6 +20,7 @@
 import errno
 import os
 import stat
+from datetime import datetime
 from dircache import listdir
 from itertools import chain
 from random import randrange
@@ -61,22 +62,30 @@ def destroy_heso(reponame):
     _rmtree(_get_repo_path(reponame))
 
 
-def get_heso(reponame):
+def get_heso(reponame, rev=None):
     repo = _get_repo(reponame)
+    commit = repo.commit(rev)
     files = [{'filename': blob.name,
               'document': unicode(blob.data_stream.read(), 'utf-8'),
               'removed': False}
-             for blob in repo.tree()]
+             for blob in commit.tree]
     return {'reponame': reponame,
             'files': files,
             'description': unicode(repo.description, 'utf-8'),
             # fixme: do you want to oldest committed date?
-            'created': strftime("%b %d, %Y",
-                               gmtime(repo.commit().committed_date))}
+            'created': strftime('%b %d, %Y',
+                                gmtime(commit.committed_date))}
 
 
 def get_all_heso():
     return [get_heso(reponame) for reponame in _get_reponames()]
+
+
+def get_history(reponame):
+    return [{'rev': c.hexsha, 'revshort': c.hexsha[0:5],
+             'author': c.author.name,
+             'timestamp': _prettytime(c.committed_date)}
+            for c in _get_repo(reponame).iter_commits()]
 
 
 def add_comment(reponame, comment):
@@ -171,6 +180,31 @@ def _get_comment_path(reponame):
 
 def _rmtree(path):
     rmtree(path, ignore_errors=False, onerror=_handle_readonly)
+
+
+def _prettytime(timestamp):
+    """See http://stackoverflow.com/questions/410221/natural-relative-days-in-python"""
+    d = datetime.fromtimestamp(timestamp)
+    diff = datetime.today() - d
+    s = diff.seconds
+    if diff.days > 7 or diff.days < 0:
+        return d.strftime('%d %b %y')
+    elif diff.days == 1:
+        return '1 day ago'
+    elif diff.days > 1:
+        return '{0} days ago'.format(diff.days)
+    elif s <= 1:
+        return 'just now'
+    elif s < 60:
+        return '{0} seconds ago'.format(s)
+    elif s < 120:
+        return '1 minute ago'
+    elif s < 3600:
+        return '{0} minutes ago'.format(s/60)
+    elif s < 7200:
+        return '1 hour ago'
+    else:
+        return '{0} hours ago'.format(s/3600)
 
 
 def _handle_readonly(func, path, exc):

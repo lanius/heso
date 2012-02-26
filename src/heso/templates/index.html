@@ -86,14 +86,29 @@
 			</div> <!-- content -->
 			
 			<div class="span2"> <!-- sidebar -->
+				{% if for_create %}
+				<h3>Recent Heso</h3>
+				<hr />
 				{% for heso in hesoes %}
 				<div>
-					<a href="{{ url_for('heso', reponame=heso.reponame) }}">heso: {{heso.reponame}}</a> 
+					<a href="{{ url_for('heso_latest', reponame=heso.reponame) }}">heso: {{heso.reponame}}</a> 
 					{{heso.description}} <br />
 					created {{heso.created}}
 				</div>
 				<hr />
 				{% endfor %}
+				{% else %}
+				<h3>Revisions</h3>
+				<hr />
+				{% for commit in history %}
+				<div>
+					<a href="{{ url_for('heso', reponame=reponame, rev=commit.rev) }}">{{commit.revshort}}</a> 
+					{{commit.author}} 
+					{{commit.timestamp}} 
+				</div>
+				<hr />
+				{% endfor %}
+				{% endif %}
 			</div>  <!-- sidebar -->
 			
 			
