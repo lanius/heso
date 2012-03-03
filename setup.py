@@ -36,6 +36,7 @@ setup(
         'Flask',
         'GitPython',
         'WTForms',
+        'peewee',
     ],
     entry_points="""
     [paste.app_factory]

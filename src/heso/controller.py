@@ -20,23 +20,27 @@
 import os
 
 from flask import (Flask, request, render_template, abort, redirect, url_for,
-                   flash)
+                   session, flash, g)
 
 from setting import REPO_ROOT
 from application import *
 from forms import HesoForm
 
+from model import User, create_tables
+from database import database
 
 app = Flask(__name__)
 
 
 @app.before_request
 def before_request():
-    pass
+    g.db = database
+    g.db.connect()
 
 
 @app.after_request
 def after_request(response):
+    g.db.close()
     response.headers['Server'] = 'I am heso !'
     return response
 
@@ -44,6 +48,27 @@ def after_request(response):
 @app.route('/favicon.ico')
 def favicon():
     return app.send_static_file('favicon.ico')
+
+
+@app.route('/login', methods=['POST'])
+def login():
+    username = request.form.get('username')
+    password = request.form.get('password')
+    try:
+        user = User.get(name=username)
+    except User.DoesNotExist:
+        return redirect(url_for('index'))
+    if (user.validate_password(password)):
+        session['username'] = username
+        session['logged_in'] = True
+    return redirect(url_for('index'))
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    #session.destroy()
+    return redirect(url_for('index'))
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -108,6 +133,7 @@ def extract_heso(form):
 def make_app(global_conf={}):
     app.debug = False
     app.secret_key = os.urandom(24)
+    create_tables()
     return app
 
 

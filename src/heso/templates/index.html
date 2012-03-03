@@ -16,11 +16,18 @@
 	<header class="header navbar-inner">
 		<div class="logo"><a href="{{ url_for('index') }}" class="logoa">Heso</a></div>
 		<div class="pull-right login-form">
-			<form action="/xxx" method="post" class="form-inline">
-				<input type="text" class="input-small" placeholder="username" />
-				<input type="password" class="input-small" placeholder="password" />
+			{% if 'logged_in' in session %}
+			<form action="{{ url_for('logout') }}" method="get" class="form-inline">
+				<span class="user-info">Welcome, {{ session.get('username') }}</span>
+				<button type="submit" class="btn btn-inverse">Logout</button>
+			</form>
+			{% else %}
+			<form action="{{ url_for('login') }}" method="post" class="form-inline">
+				<input type="text" name="username" class="input-small" placeholder="username" />
+				<input type="password" name="password" class="input-small" placeholder="password" />
 				<button type="submit" class="btn btn-inverse">Login</button>
 			</form>
+			{% endif %}
 		</div>
 	</header>
 
