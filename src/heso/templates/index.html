@@ -15,6 +15,13 @@
 
 	<header class="header navbar-inner">
 		<div class="logo"><a href="{{ url_for('index') }}" class="logoa">Heso</a></div>
+		<div class="pull-right login-form">
+			<form action="/xxx" method="post" class="form-inline">
+				<input type="text" class="input-small" placeholder="username" />
+				<input type="password" class="input-small" placeholder="password" />
+				<button type="submit" class="btn btn-inverse">Login</button>
+			</form>
+		</div>
 	</header>
 
 	<div class="container-fluid">

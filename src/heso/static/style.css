@@ -1,4 +1,8 @@
-﻿.header {
+﻿body {
+	background-color: #dddddd;
+}
+
+.header {
 	padding: 20px;
 }
 
@@ -12,6 +16,10 @@
 
 .logo > .logoa {
 	text-decoration: none;
+}
+
+.login-form {
+	margin-top: -22px;
 }
 
 .container-wrapper {
@@ -56,6 +64,7 @@
 	width: 98.5%;
 	height: 100px;
 	margin-bottom: 19px;
+	padding-right: 8px;
 }
 
 .comment-wrapper {
@@ -63,6 +72,7 @@
 }
 
 .comment-well {
+	margin-top: 12px;
 	margin-bottom: 0;
 }
 
