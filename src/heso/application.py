@@ -43,18 +43,22 @@ def is_invalid(heso):
         return True
 
 
-def create_heso(heso):
+def create_heso(heso, username=None):
+    if not username:
+        username = 'anonymous'
     reponame = _create_reponame()
     _init_repo(reponame)
 
     _update_repo(reponame, heso['files'], heso['description'])
-    _push_repo(reponame, "create repository.")
+    _push_repo(reponame, "create repository.", username)
     _cleanup(reponame)
 
 
-def update_heso(reponame, heso):
+def update_heso(reponame, heso, username=None):
+    if not username:
+        username = 'anonymous'
     _update_repo(reponame, heso['files'], heso['description'])
-    _push_repo(reponame, "update.")
+    _push_repo(reponame, "update.", username)
     _cleanup(reponame)
 
 
@@ -155,11 +159,13 @@ def _update_repo(reponame, files, description):
     repo.description = description.encode('utf-8')
 
 
-def _push_repo(reponame, comment):
+def _push_repo(reponame, comment,
+               username='anonymous', email='heso@nirvake.org'):
     repo = Repo(_get_tmp_path(reponame))
     repo.git.add('-A')
     try:
-        repo.git.commit('-m', '"{0}"'.format(comment))
+        repo.git.commit('-m', '{0}'.format(comment),
+                        '--author', '{0} <{1}>'.format(username, email))
         repo.git.push(_get_repo_path(reponame), 'master')
     except:
         # todo: handle error.

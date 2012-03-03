@@ -76,7 +76,7 @@ def index():
     form = HesoForm(request.form)
     if request.method == 'POST':
         if form.validate():
-            create_heso(extract_heso(form))
+            create_heso(extract_heso(form), session.get('username'))
             return redirect(url_for('index'))
         flash(u'all fields are required.')
     hesoes = get_all_heso()
@@ -94,7 +94,7 @@ def heso(reponame, rev):
     if request.method == 'POST':
         form = HesoForm(request.form)
         if form.validate():
-            update_heso(reponame, extract_heso(form))
+            update_heso(reponame, extract_heso(form), session.get('username'))
             return redirect(url_for('heso_latest', reponame=reponame))
         flash(u'all fields are required.')
     else:
