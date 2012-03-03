@@ -41,5 +41,7 @@ setup(
     entry_points="""
     [paste.app_factory]
     main = heso.controller:make_app
+    [console_scripts]
+    heso_add_user = heso.script:add_user
     """,
 )
