@@ -20,5 +20,7 @@
 from peewee import SqliteDatabase
 #from peewee import MySQLDatabase
 
-database = SqliteDatabase('heso.db', threadlocals=True)
+from setting import USER_DB_FILE
+
+database = SqliteDatabase(USER_DB_FILE, threadlocals=True)
 #database = MySQLDatabase(...)
