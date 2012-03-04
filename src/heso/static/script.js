@@ -1,7 +1,7 @@
 ﻿(function () {
   "use strict";
   
-  var STATIC_ROOT = "/static/";
+  var STATIC_ROOT = document.getElementById("static-root").value;
   
   var getFileLanguage = function (fileName) {
     var ext = fileName.split('.').pop(),
