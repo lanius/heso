@@ -38,3 +38,7 @@ Design
 Consideration
 =============
 * Use pygments
+
+Known Bugs
+==========
+* Non-ascii strings cannot be used as filename in Windows environment.

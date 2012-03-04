@@ -50,38 +50,25 @@ class ApplicationTestCase(unittest.TestCase):
             self._remove_repo(reponame)
 
     def test_is_invalid(self):
-        valid_heso = {'description': "This is description.",
-                      'files': [{'filename': "heso_test.py",
-                                 'document': "import heso",
-                                 'removed': False}]}
+        valid_heso = self._make_heso()
         self.assertFalse(application.is_invalid(valid_heso))
 
-        invalid_heso = {'description': "",
-                        'files':[{'filename': "heso_test.py",
-                                  'document': "import heso",
-                                  'removed': False}]}
-        self.assertTrue(application.is_invalid(invalid_heso))
+        desc_blank_heso = valid_heso.copy()
+        desc_blank_heso['description'] = ""
+        self.assertTrue(application.is_invalid(desc_blank_heso))
 
-        invalid_heso = {'description': "This is description.",
-                        'files':[{'filename': "",
-                                  'document': "import heso",
-                                  'removed': False}]}
-        self.assertTrue(application.is_invalid(invalid_heso))
+        fname_blank_heso = valid_heso.copy()
+        fname_blank_heso['files'][0]['filename'] = ""
+        self.assertTrue(application.is_invalid(fname_blank_heso))
 
     def test_create_heso(self):
-        heso = {'description': "This is description.",
-                'files': [{'filename': "heso_test.py",
-                           'document': "import heso",
-                           'removed': False}]}
+        heso = self._make_heso()
         application.create_heso(heso)
         diff = self._get_diff_repos()
         self.assertEqual(len(diff), 1)
 
     def test_update_heso(self):
-        heso = {'description':"This is description.",
-                'files':[{'filename':"heso_test.py",
-                          'document':"import heso",
-                          'removed': False}]}
+        heso = self._make_heso()
         application.create_heso(heso)
         reponame = self._get_diff_repos()[0]
         expected = application.get_heso(reponame)
@@ -94,20 +81,14 @@ class ApplicationTestCase(unittest.TestCase):
                          expected['files'][0]['filename'])
 
     def test_destroy_heso(self):
-        heso = {'description':"This is description.",
-                'files':[{'filename':"heso_test.py",
-                          'document':"import heso",
-                          'removed': False}]}
+        heso = self._make_heso()
         application.create_heso(heso)
         reponame = self._get_diff_repos()[0]
         application.destroy_heso(reponame)
         self.assert_(reponame not in self._get_current_repos())
 
     def test_get_heso(self):
-        heso = {'description': "This is description.",
-                'files':[{'filename': "heso_test.py",
-                          'document': "import heso",
-                          'removed': False}]}
+        heso = self._make_heso()
         application.create_heso(heso)
         reponame = self._get_diff_repos()[0]
         result = application.get_heso(reponame)
@@ -116,32 +97,18 @@ class ApplicationTestCase(unittest.TestCase):
                          heso['files'][0]['filename'])
 
     def test_get_all_heso(self):
-        heso1 = {'description': "This is description. I am Heso 1.",
-                 'files': [{'filename': "heso_test.py",
-                            'document': "import heso",
-                            'removed': False}]}
-        application.create_heso(heso1)
-        heso2 = {'description': "This is description. I am Heso 2.",
-                'files': [{'filename': "heso_test.py",
-                           'document': "import heso",
-                           'removed': False}]}
-        application.create_heso(heso2)
-        heso3 = {'description': "This is description.  I am Heso 3.",
-                'files': [{'filename': "heso_test.py",
-                           'document': "import heso",
-                           'removed': False}]}
-        application.create_heso(heso3)
-        
+        for i in xrange(3):
+            heso = self._make_heso()
+            heso['description'] = "Heso description number {0}.".format(i+1)
+            application.create_heso(heso)
+
         all_heso = application.get_all_heso()
         expected = self._get_current_repos()
         for heso in all_heso:
             self.assert_(heso['reponame'] in expected)
 
     def test_get_history(self):
-        heso = {'description':"This is description.",
-                'files':[{'filename':"heso_test.py",
-                          'document':"import heso",
-                          'removed': False}]}
+        heso = self._make_heso()
         application.create_heso(heso)
         reponame = self._get_diff_repos()[0]
 
@@ -154,30 +121,25 @@ class ApplicationTestCase(unittest.TestCase):
         self.assertEqual(len(history), 3)
 
     def test_comment(self):
-        heso = {'description': "This is description.",
-                'files': [{'filename': "heso_test.py",
-                           'document': "import heso",
-                           'removed': False}]}
+        heso = self._make_heso()
         application.create_heso(heso)
         reponame = self._get_diff_repos()[0]
 
         begin_comments = application.get_all_comment(reponame)
-
-        comment1 = "This is test comment 1."
-        application.add_comment(reponame, comment1)
-        time.sleep(0.001)  # fixme: I don't want to use sleep!
-
-        comment2 = "This is test comment 2."
-        application.add_comment(reponame, comment2)
-        time.sleep(0.001)  # fixme: I don't want to use sleep!
-
-        comment3 = "This is test comment 3."
-        application.add_comment(reponame, comment3)
-
+        for i in xrange(3):
+            comment = "This is test comment number {0}.".format(i+1)
+            application.add_comment(reponame, comment)
+            time.sleep(0.001)  # fixme: I don't want to use sleep!
         comments = application.get_all_comment(reponame)
-
         self.assertEqual(len(comments), len(begin_comments) + 3)
-        self.assertEqual(comments[-1], comment3)
+
+    def _make_heso(self):
+        return {'description': "This is a test description.",
+                'files': [
+                    {'filename': "heso_test.py",
+                     'document': "import heso",
+                     'removed': False}
+                    ]}
 
     def _get_current_repos(self):
         return [repodir[0:-4] for repodir in os.listdir(REPO_ROOT)]
