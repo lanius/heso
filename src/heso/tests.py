@@ -77,6 +77,32 @@ class ApplicationTestCase(unittest.TestCase):
         diff = self._get_diff_repos()
         self.assertEqual(len(diff), 1)
 
+    def test_update_heso(self):
+        heso = {'description':"This is description.",
+                'files':[{'filename':"heso_test.py",
+                          'document':"import heso",
+                          'removed': False}]}
+        application.create_heso(heso)
+        reponame = self._get_diff_repos()[0]
+        expected = application.get_heso(reponame)
+        expected['description'] = "This heso is updated."
+        application.update_heso(reponame, expected)
+
+        result = application.get_heso(reponame)
+        self.assertEqual(result['description'], expected['description'])
+        self.assertEqual(result['files'][0]['filename'],
+                         expected['files'][0]['filename'])
+
+    def test_destroy_heso(self):
+        heso = {'description':"This is description.",
+                'files':[{'filename':"heso_test.py",
+                          'document':"import heso",
+                          'removed': False}]}
+        application.create_heso(heso)
+        reponame = self._get_diff_repos()[0]
+        application.destroy_heso(reponame)
+        self.assert_(reponame not in self._get_current_repos())
+
     def test_get_heso(self):
         heso = {'description': "This is description.",
                 'files':[{'filename': "heso_test.py",
@@ -110,32 +136,22 @@ class ApplicationTestCase(unittest.TestCase):
         expected = self._get_current_repos()
         for heso in all_heso:
             self.assert_(heso['reponame'] in expected)
-        
-    def test_update_heso(self):
+
+    def test_get_history(self):
         heso = {'description':"This is description.",
                 'files':[{'filename':"heso_test.py",
                           'document':"import heso",
                           'removed': False}]}
         application.create_heso(heso)
         reponame = self._get_diff_repos()[0]
-        expected = application.get_heso(reponame)
-        expected['description'] = "This heso is updated."
-        application.update_heso(reponame, expected)
 
-        result = application.get_heso(reponame)
-        self.assertEqual(result['description'], expected['description'])
-        self.assertEqual(result['files'][0]['filename'],
-                         expected['files'][0]['filename'])
+        heso['files'][0]['document'] = "This heso is updated once."
+        application.update_heso(reponame, heso)
+        heso['files'][0]['document'] = "This heso is updated twice."
+        application.update_heso(reponame, heso)
 
-    def test_destroy_heso(self):
-        heso = {'description':"This is description.",
-                'files':[{'filename':"heso_test.py",
-                          'document':"import heso",
-                          'removed': False}]}
-        application.create_heso(heso)
-        reponame = self._get_diff_repos()[0]
-        application.destroy_heso(reponame)
-        self.assert_(reponame not in self._get_current_repos())
+        history = application.get_history(reponame)
+        self.assertEqual(len(history), 3)
 
     def test_comment(self):
         heso = {'description': "This is description.",
