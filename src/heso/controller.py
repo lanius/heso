@@ -21,15 +21,17 @@ import os
 
 from flask import (Flask, request, render_template, abort, redirect, url_for,
                    session, flash, g)
+from flaskext.mitten import Mitten
 
 from setting import REPO_ROOT
 from application import *
 from forms import HesoForm
-
 from model import User, create_tables
 from database import database
 
 app = Flask(__name__)
+mitten = Mitten(app)
+mitten.banner = 'I am heso !'
 
 
 @app.before_request
@@ -41,7 +43,6 @@ def before_request():
 @app.after_request
 def after_request(response):
     g.db.close()
-    response.headers['Server'] = 'I am heso !'
     return response
 
 
@@ -59,6 +60,7 @@ def login():
     except User.DoesNotExist:
         return redirect(url_for('index'))
     if (user.validate_password(password)):
+        session.regenerate()
         session['username'] = username
         session['logged_in'] = True
     return redirect(url_for('index'))
@@ -66,8 +68,7 @@ def login():
 
 @app.route('/logout')
 def logout():
-    session.clear()
-    #session.destroy()
+    session.destroy()
     return redirect(url_for('index'))
 
 

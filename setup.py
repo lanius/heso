@@ -34,6 +34,7 @@ setup(
     install_requires=[
         'setuptools',
         'Flask',
+        'Flask-Mitten',
         'GitPython',
         'WTForms',
         'peewee',

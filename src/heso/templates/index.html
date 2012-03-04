@@ -25,6 +25,7 @@
 			<form action="{{ url_for('login') }}" method="post" class="form-inline">
 				<input type="text" name="username" class="input-small" placeholder="username" />
 				<input type="password" name="password" class="input-small" placeholder="password" />
+				<input type="hidden" name="_csrf_token" value="{{ csrf_token() }}" />
 				<button type="submit" class="btn btn-inverse">Login</button>
 			</form>
 			{% endif %}
@@ -67,6 +68,8 @@
 						<a id="add" href="#" class="add">add another file</a>
 					</div>
 					
+					<input type="hidden" name="_csrf_token" value="{{ csrf_token() }}" />
+					
 					{% if for_create %}
 					<div class="create">
 						<input type="submit" value="Create Heso" class="btn btn-primary" />
@@ -76,7 +79,7 @@
 						<input type="submit" value="Update Heso" class="btn btn-primary" />
 					</div>
 					{% endif %}
-
+				
 				</form>
 				{% if for_create is not defined %}
 				<div class="comments">
