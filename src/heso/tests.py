@@ -30,7 +30,7 @@ from setting import REPO_ROOT
 class ControllerTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.app = controller.app.test_client()
+        self.app = controller.make_app().test_client()
 
     def tearDown(self):
         pass
