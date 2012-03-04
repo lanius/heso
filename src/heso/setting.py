@@ -2,6 +2,7 @@
 import os.path
 var_heso = os.path.join(os.path.dirname(__file__), '../../var/heso')
 REPO_ROOT = os.path.join(var_heso, 'repo')
+LOG_FILE = os.path.join(var_heso, 'heso.log')
 USER_DB_FILE = os.path.join(var_heso, 'user.db')
 RUN_ON_HEROKU = False
 if RUN_ON_HEROKU: REPO_ROOT = '/app/repo/'

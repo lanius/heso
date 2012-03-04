@@ -17,13 +17,14 @@
 
 """Controller of Heso."""
 
+import logging
 import os
 
 from flask import (Flask, request, render_template, abort, redirect, url_for,
                    session, flash, g)
 from flaskext.mitten import Mitten
 
-from setting import REPO_ROOT
+from setting import REPO_ROOT, LOG_FILE
 from application import *
 from forms import HesoForm
 from model import User, create_tables
@@ -32,6 +33,10 @@ from database import database
 app = Flask(__name__)
 mitten = Mitten(app)
 mitten.banner = 'I am heso !'
+
+handler = logging.FileHandler(LOG_FILE, encoding='utf-8')
+handler.setLevel(logging.WARN)
+app.logger.addHandler(handler)
 
 
 @app.before_request
@@ -53,6 +58,7 @@ def favicon():
 
 @app.route('/login', methods=['POST'])
 def login():
+    # todo: show a message about login success or fail
     username = request.form.get('username')
     password = request.form.get('password')
     try:
@@ -116,10 +122,13 @@ def comment(reponame):
 
 @app.errorhandler(500)
 def error(e):
-    message = u'any error occured.'
+    # todo: return a custom error page
+    app.logger.exception(u'An Error was handled.')
+    flash(u'Sorry, any error occurred..')
+    form = HesoForm(request.form)
     hesoes = get_all_heso()
-    return render_template('index.html',
-                           hesoes=hesoes, error_message=message)
+    return render_template('index.html', hesoes=hesoes, form=form, 
+                           for_create=True)
 
 
 def extract_heso(form):
