@@ -24,13 +24,13 @@ from model import User, create_tables
 from database import database
 
 
-def add_user(_=None):
+def adduser(_=None):
     create_tables()
 
     username = raw_input('Username:')
     user = None
     try:
-        user = User.get(name=username)    
+        user = User.get(name=username)
     except User.DoesNotExist:
         pass  # ok
     if user:

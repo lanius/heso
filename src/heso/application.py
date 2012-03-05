@@ -206,11 +206,11 @@ def _prettytime(timestamp):
     elif s < 120:
         return '1 minute ago'
     elif s < 3600:
-        return '{0} minutes ago'.format(s/60)
+        return '{0} minutes ago'.format(s / 60)
     elif s < 7200:
         return '1 hour ago'
     else:
-        return '{0} hours ago'.format(s/3600)
+        return '{0} hours ago'.format(s / 3600)
 
 
 def _handle_readonly(func, path, exc):

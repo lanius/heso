@@ -17,11 +17,13 @@
 
 """Test script of Heso."""
 
-import errno, stat
+import errno
 import os
 from shutil import rmtree
+import stat
 import time
 import unittest
+
 import application
 import controller
 from setting import REPO_ROOT
@@ -37,7 +39,8 @@ class ControllerTestCase(unittest.TestCase):
 
     def test_index(self):
         rv = self.app.get('/')
-        self.assert_("Heso" in rv.data)
+        self.assert_('Heso' in rv.data)
+
 
 class ApplicationTestCase(unittest.TestCase):
 
@@ -99,7 +102,7 @@ class ApplicationTestCase(unittest.TestCase):
     def test_get_all_heso(self):
         for i in xrange(3):
             heso = self._make_heso()
-            heso['description'] = "Heso description number {0}.".format(i+1)
+            heso['description'] = "Heso description number {0}.".format(i + 1)
             application.create_heso(heso)
 
         all_heso = application.get_all_heso()
@@ -127,7 +130,7 @@ class ApplicationTestCase(unittest.TestCase):
 
         begin_comments = application.get_all_comment(reponame)
         for i in xrange(3):
-            comment = "This is test comment number {0}.".format(i+1)
+            comment = "This is test comment number {0}.".format(i + 1)
             application.add_comment(reponame, comment)
             time.sleep(0.001)  # fixme: I don't want to use sleep!
         comments = application.get_all_comment(reponame)

@@ -21,7 +21,7 @@ Download the source code::
      git clone git://github.com/lanius/heso.git
      cd heso
 
-Edit buildout.cfg and change value of "host" or "port" to suit your environment::
+Edit buildout.cfg and change values of "host", "port" or others to suit your environment::
 
     vi buildout.cfg
 
@@ -30,9 +30,13 @@ Install Heso with buildout::
     python bootstrap.py -d
     bin/buildout
 
-Now, you can run the server::
+Now, you can run the server and access it::
 
     bin/server
+
+To add a user optionally, execute following command::
+
+    bin/heso-adduser
 
 Installing on Windows
 =====================

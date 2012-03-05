@@ -24,6 +24,7 @@ from application import get_all_heso, destroy_heso
 
 REMAINED = 8
 
+
 @app.route('/clean')
 def clean():
     for i, heso in enumerate(get_all_heso()):

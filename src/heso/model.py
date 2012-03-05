@@ -71,6 +71,6 @@ def create_tables():
     database.connect()
     try:
         User.create_table()
-    except:  # OperationalError
-        pass # database already exists. skip creating tables.
+    except:   # OperationalError
+        pass  # database already exists. skip creating tables.
     database.close()

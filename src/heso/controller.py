@@ -87,7 +87,7 @@ def index():
             return redirect(url_for('index'))
         flash(u'all fields are required.')
     hesoes = get_all_heso()
-    return render_template('index.html', hesoes=hesoes, form=form, 
+    return render_template('index.html', hesoes=hesoes, form=form,
                            for_create=True)
 
 
@@ -127,12 +127,12 @@ def error(e):
     flash(u'Sorry, any error occurred..')
     form = HesoForm(request.form)
     hesoes = get_all_heso()
-    return render_template('index.html', hesoes=hesoes, form=form, 
+    return render_template('index.html', hesoes=hesoes, form=form,
                            for_create=True)
 
 
 def extract_heso(form):
-    return {'files': [{'filename': f.filename.data, 
+    return {'files': [{'filename': f.filename.data,
                        'document': f.document.data,
                        'removed': True if f.removed.data == u'true' else False
                        }
