@@ -219,7 +219,7 @@ def _handle_readonly(func, path, exc):
 
 def _replace_lfcode(text):
     """For Windows."""
-    return '\n'.join(text.splitlines())
+    return text.replace('\r', '')
 
 
 if __name__ == '__main__':
