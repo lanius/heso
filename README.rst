@@ -4,7 +4,7 @@ Heso
 
 Welcome to Heso
 ===============
-Heso is web application to share snippets and pastes with others, and an open source clone of Gist.
+Heso is a web application to share snippets and pastes with others, and an open source clone of Gist.
 
 Live Demo
 =========
